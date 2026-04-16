@@ -25,7 +25,6 @@ import { DynamicQuestion, isQuestionVisible } from "@/components/public/dynamic-
 import {
   personalSchema,
   professionalSchema,
-  applicationSchema,
 } from "@/lib/schemas/application";
 import { formatCpf, formatPhone } from "@/lib/utils/format";
 import { stepperSteps, consents } from "@/lib/content/messages";
@@ -318,25 +317,6 @@ export function ApplicationForm({
         };
       }),
     };
-
-    // Final shape validation (loose; per-step already validated)
-    const result = applicationSchema.safeParse({
-      ...payload.personal,
-      ...payload.professional,
-      hotel_experience: values.hotel_experience as "sim" | "nao",
-      customer_service_experience: values.customer_service_experience as "sim" | "nao",
-      job_id: payload.job_id,
-      is_talent_pool: payload.is_talent_pool,
-      resume_url: payload.resume_url,
-      attachments: payload.attachments,
-      answers: values.answers,
-      truthfulness_accepted: payload.consents.truthfulness_accepted as true,
-      lgpd_accepted: payload.consents.lgpd_accepted as true,
-    });
-    if (!result.success) {
-      setSubmitError("Há campos pendentes nas etapas anteriores.");
-      return;
-    }
 
     setSubmitting(true);
     try {

@@ -68,11 +68,7 @@ select 'role', r.id, ord, t, l, o, req, c from r,
   (40,'short_text','Quais sistemas de hotel você já utilizou? (ex.: Desbravador, CMNet, Omnibees)',null,false,null),
   (50,'scale','Como você avalia sua organização para lidar com várias demandas ao mesmo tempo?',
     '["1","2","3","4","5"]'::jsonb,true,null),
-  (60,'long_text','Conte uma situação em que precisou manter cordialidade diante de um hóspede insatisfeito.',null,true,null),
-  (70,'single','Qual seu nível de inglês?',
-    '["Fluente","Avançado","Intermediário","Básico","Não tenho"]'::jsonb,true,null),
-  (75,'single','Qual seu nível de espanhol?',
-    '["Fluente","Avançado","Intermediário","Básico","Não tenho"]'::jsonb,false,null)
+  (60,'long_text','Conte uma situação em que precisou manter cordialidade diante de um hóspede insatisfeito.',null,true,null)
 ) as v(ord,t,l,o,req,c);
 
 -- COZINHEIRO
