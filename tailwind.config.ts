@@ -111,7 +111,7 @@ const config: Config = {
         "5xl": "2.5rem",
       },
       fontFamily: {
-        display: ["Cormorant Garamond", "Georgia", "serif"],
+        display: ["Inter", "system-ui", "sans-serif"],
         body: ["Inter", "system-ui", "sans-serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
       },

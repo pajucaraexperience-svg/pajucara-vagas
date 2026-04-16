@@ -11,7 +11,7 @@ export default function CandidaturaEnviadaPage() {
       <div className="rounded-full bg-teal/10 p-4">
         <CheckCircle2 className="h-12 w-12 text-teal" />
       </div>
-      <h1 className="mt-5 font-display text-4xl font-light text-teal-dark">
+      <h1 className="mt-5 font-display text-4xl font-semibold text-teal-dark">
         {submitConfirmation.title}
       </h1>
       <div className="mt-3 h-px w-16 bg-gradient-signature" />

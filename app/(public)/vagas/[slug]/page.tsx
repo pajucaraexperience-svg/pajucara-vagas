@@ -47,7 +47,7 @@ export default async function JobDetail({
 
       <header className="mt-6">
         <Badge variant="secondary">{j.sector ?? "Hotelaria"}</Badge>
-        <h1 className="mt-3 font-display text-4xl font-light text-teal-dark sm:text-display-md">
+        <h1 className="mt-3 font-display text-4xl font-semibold text-teal-dark sm:text-display-md">
           {j.title}
         </h1>
         <div className="mt-3 h-px w-16 bg-gradient-signature" />

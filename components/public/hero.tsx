@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { hero } from "@/lib/content/institutional";
@@ -10,6 +11,14 @@ export function Hero() {
         className="absolute inset-0 bg-gradient-hero opacity-[0.07]"
       />
       <div className="container-page relative py-20 sm:py-28">
+        <Image
+          src="/logo.png"
+          alt="Pajuçara Experience"
+          width={220}
+          height={106}
+          className="mb-6 h-16 w-auto sm:h-20"
+          priority
+        />
         <span className="inline-flex items-center rounded-full bg-teal/10 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-teal-dark">
           {hero.eyebrow}
         </span>

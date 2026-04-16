@@ -25,7 +25,7 @@ export default async function HomePage() {
       <section className="container-page py-20">
         <div className="grid gap-12 md:grid-cols-[1.2fr,1fr] md:items-start">
           <div>
-            <h2 className="font-display text-display-md font-light text-teal-dark">
+            <h2 className="font-display text-display-md font-semibold text-teal-dark">
               {about.title}
             </h2>
             <div className="mt-3 h-px w-16 bg-gradient-signature" />
@@ -53,7 +53,7 @@ export default async function HomePage() {
 
       <section id="vagas" className="bg-cream-200/60 py-20">
         <div className="container-page">
-          <h2 className="font-display text-display-md font-light text-teal-dark">
+          <h2 className="font-display text-display-md font-semibold text-teal-dark">
             {jobsIntro.title}
           </h2>
           <div className="mt-3 h-px w-16 bg-gradient-signature" />
@@ -79,7 +79,7 @@ export default async function HomePage() {
             aria-hidden
             className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gradient-signature opacity-10 blur-3xl"
           />
-          <h3 className="font-display text-3xl font-light text-teal-dark sm:text-display-sm">
+          <h3 className="font-display text-3xl font-semibold text-teal-dark sm:text-display-sm">
             {talentPoolBlock.title}
           </h3>
           <p className="prose-hotel mt-4 max-w-2xl">{talentPoolBlock.subtitle}</p>

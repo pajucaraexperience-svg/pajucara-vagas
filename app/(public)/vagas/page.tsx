@@ -18,7 +18,7 @@ export default async function VagasPage() {
 
   return (
     <div className="container-page py-16">
-      <h1 className="font-display text-4xl font-light text-teal-dark sm:text-display-md">
+      <h1 className="font-display text-4xl font-semibold text-teal-dark sm:text-display-md">
         {jobsIntro.title}
       </h1>
       <div className="mt-3 h-px w-16 bg-gradient-signature" />
