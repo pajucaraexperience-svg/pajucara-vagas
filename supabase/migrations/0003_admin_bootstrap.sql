@@ -1,0 +1,10 @@
+-- Bootstrap do primeiro administrador
+-- ================================================================
+-- Após criar o usuário em Authentication > Users no Supabase,
+-- rode este SQL substituindo o e-mail abaixo para promovê-lo a admin.
+--
+-- insert into public.admin_users (id, email, role, full_name)
+-- select id, email, 'admin', 'Admin Pajuçara'
+-- from auth.users
+-- where email = 'rh@grupopajucara.com.br'
+-- on conflict (id) do nothing;
