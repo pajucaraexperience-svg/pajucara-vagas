@@ -1,12 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "regions": ["gru1"],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/trabalheconosco",
-      "permanent": false
-    }
-  ]
+  "regions": ["gru1"]
 }
