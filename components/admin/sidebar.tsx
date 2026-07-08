@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, ClipboardList, GraduationCap, HelpCircle, LayoutDashboard, LogOut } from "lucide-react";
+import { BarChart3, Briefcase, ClipboardList, GraduationCap, HelpCircle, LayoutDashboard, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ const items = [
   { href: "/admin/cursos", label: "Cursos", icon: GraduationCap },
   { href: "/admin/perguntas", label: "Perguntas", icon: HelpCircle },
   { href: "/admin/candidaturas", label: "Candidaturas", icon: ClipboardList },
+  { href: "/admin/analise", label: "Análise", icon: BarChart3 },
 ];
 
 export function AdminSidebar({ email }: { email: string }) {
