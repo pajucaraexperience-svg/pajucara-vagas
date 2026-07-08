@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Hero } from "@/components/public/hero";
 import { JobCard } from "@/components/public/job-card";
+import { CourseHighlight } from "@/components/public/course-highlight";
 import { Button } from "@/components/ui/button";
 import { about, jobsIntro, talentPoolBlock, values } from "@/lib/content/institutional";
 import { createClient } from "@/lib/supabase/server";
@@ -49,6 +50,10 @@ export default async function HomePage() {
             </ul>
           </div>
         </div>
+      </section>
+
+      <section className="container-page pb-4">
+        <CourseHighlight />
       </section>
 
       <section id="vagas" className="bg-cream-200/60 py-20">
