@@ -83,6 +83,48 @@ function ageBucket(birth: string | null): string {
   return "55+";
 }
 
+// Cidade é campo de texto livre — "Maceió" chega em várias grafias.
+// Normalizamos para agrupar as variantes e exibimos a grafia mais frequente.
+function cleanCity(city: string, state: string | null): string {
+  const c = city.trim().replace(/\s+/g, " ");
+  const uf = (state ?? "").trim().toUpperCase();
+  return `${c}/${uf}`.replace(/\s*\/\s*/g, "/");
+}
+function foldKey(s: string): string {
+  return s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/\s*\/\s*/g, "/")
+    .trim();
+}
+function tallyCities(rows: AppRow[], topN: number): { label: string; value: number }[] {
+  // key normalizada -> { total, variantes: Map<grafiaLimpa, contagem> }
+  const groups = new Map<string, { total: number; variants: Map<string, number> }>();
+  for (const r of rows) {
+    if (!r.city) continue;
+    const clean = cleanCity(r.city, r.state);
+    const key = foldKey(clean);
+    const g = groups.get(key) ?? { total: 0, variants: new Map() };
+    g.total += 1;
+    g.variants.set(clean, (g.variants.get(clean) ?? 0) + 1);
+    groups.set(key, g);
+  }
+  let arr = [...groups.values()].map((g) => {
+    const best = [...g.variants.entries()].sort((a, b) => b[1] - a[1])[0][0];
+    return { label: best, value: g.total };
+  });
+  arr.sort((a, b) => b.value - a.value);
+  if (arr.length > topN) {
+    const top = arr.slice(0, topN);
+    const rest = arr.slice(topN).reduce((n, d) => n + d.value, 0);
+    top.push({ label: "Outras", value: rest });
+    return top;
+  }
+  return arr;
+}
+
 // Conta valores; retorna na ordem fornecida (ou por contagem desc se order não dado).
 function tally(
   rows: AppRow[],
@@ -150,7 +192,9 @@ export default async function AnalisePage({
   const ages = rows.map((r) => r.birth_date).filter(Boolean).map((b) => ageOf(b as string));
   const avgAge = ages.length ? Math.round(ages.reduce((a, b) => a + b, 0) / ages.length) : null;
   const withResume = rows.filter((r) => r.resume_url).length;
-  const cities = new Set(rows.map((r) => (r.city ? `${r.city}/${r.state}` : null)).filter(Boolean));
+  const cities = new Set(
+    rows.filter((r) => r.city).map((r) => foldKey(cleanCity(r.city as string, r.state))),
+  );
   const hotelAnswered = rows.filter((r) => r.hotel_experience != null);
   const hotelYes = hotelAnswered.filter((r) => r.hotel_experience).length;
   const hotelPct = hotelAnswered.length ? Math.round((hotelYes / hotelAnswered.length) * 100) : null;
@@ -160,7 +204,7 @@ export default async function AnalisePage({
   const byEducation = tally(rows, (r) => r.education, { order: EDUCATION_ORDER });
   const byExperience = tally(rows, (r) => r.experience_years, { order: EXPERIENCE_ORDER });
   const bySchedule = tally(rows, (r) => r.schedule_availability, { order: SCHEDULE_ORDER });
-  const byCity = tally(rows, (r) => (r.city ? `${r.city}/${r.state}` : null), { topN: 8 });
+  const byCity = tallyCities(rows, 8);
   const byStage = tally(rows, (r) => stageLabels[r.stage] ?? r.stage, {
     order: Object.values(stageLabels),
   });
