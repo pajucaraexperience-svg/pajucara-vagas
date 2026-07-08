@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
 
   const url = new URL(req.url);
   const job = url.searchParams.get("job");
+  const course = url.searchParams.get("course");
   const stage = url.searchParams.get("stage");
   const city = url.searchParams.get("city");
   const hotel = url.searchParams.get("hotel");
@@ -32,13 +33,14 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from("applications")
     .select(
-      "id, full_name, email, phone_whatsapp, cpf, birth_date, city, state, address, education, last_role, interest_area, experience_years, start_availability, schedule_availability, salary_expectation, hotel_experience, customer_service_experience, stage, created_at, job:jobs(title)",
+      "id, full_name, email, phone_whatsapp, cpf, birth_date, city, state, address, education, last_role, interest_area, experience_years, start_availability, schedule_availability, salary_expectation, hotel_experience, customer_service_experience, stage, created_at, job:jobs(title), course:courses(title)",
     )
     .order("created_at", { ascending: false });
 
   if (q)
     query = query.or(`full_name.ilike.%${q}%,email.ilike.%${q}%,cpf.ilike.%${q}%`);
   if (job) query = query.eq("job_id", job);
+  if (course) query = query.eq("course_id", course);
   if (stage) query = query.eq("stage", stage);
   if (city) query = query.ilike("city", `%${city}%`);
   if (hotel === "sim") query = query.eq("hotel_experience", true);
@@ -49,6 +51,12 @@ export async function GET(req: NextRequest) {
 
   const rows = (data ?? []).map((a) => {
     const j = Array.isArray(a.job) ? a.job[0] : a.job;
+    const c = Array.isArray(a.course) ? a.course[0] : a.course;
+    const origin = j?.title
+      ? j.title
+      : c?.title
+      ? `Curso: ${c.title}`
+      : "Banco de talentos";
     return {
       ID: a.id,
       "Nome completo": a.full_name,
@@ -59,7 +67,7 @@ export async function GET(req: NextRequest) {
       Cidade: a.city,
       UF: a.state,
       Endereço: a.address ?? "",
-      Vaga: j?.title ?? "Banco de talentos",
+      Vaga: origin,
       Etapa: stageLabels[a.stage as string] ?? a.stage,
       Escolaridade: a.education ?? "",
       "Último cargo": a.last_role ?? "",

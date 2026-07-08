@@ -13,6 +13,7 @@ export const dynamic = "force-dynamic";
 interface SearchParams {
   q?: string;
   job?: string;
+  course?: string;
   stage?: string;
   city?: string;
   experience?: string;
@@ -30,7 +31,7 @@ export default async function CandidaturasPage({
   let query = supabase
     .from("applications")
     .select(
-      "id, full_name, email, city, state, hotel_experience, experience_years, stage, created_at, job:jobs(title, slug)",
+      "id, full_name, email, city, state, hotel_experience, experience_years, stage, created_at, job:jobs(title, slug), course:courses(title, slug)",
       { count: "exact" },
     )
     .order("created_at", { ascending: false })
@@ -41,16 +42,21 @@ export default async function CandidaturasPage({
       `full_name.ilike.%${params.q}%,email.ilike.%${params.q}%,cpf.ilike.%${params.q}%`,
     );
   if (params.job) query = query.eq("job_id", params.job);
+  if (params.course) query = query.eq("course_id", params.course);
   if (params.stage) query = query.eq("stage", params.stage);
   if (params.city) query = query.ilike("city", `%${params.city}%`);
   if (params.experience) query = query.eq("experience_years", params.experience);
   if (params.hotel === "sim") query = query.eq("hotel_experience", true);
   if (params.hotel === "nao") query = query.eq("hotel_experience", false);
 
-  const [{ data, count }, { data: jobs }] = await Promise.all([
+  const [{ data, count }, { data: jobs }, { data: courses }] = await Promise.all([
     query,
     supabase
       .from("jobs")
+      .select("id, title")
+      .order("title"),
+    supabase
+      .from("courses")
       .select("id, title")
       .order("title"),
   ]);
@@ -105,6 +111,19 @@ export default async function CandidaturasPage({
           </select>
         </div>
         <div>
+          <label className="text-xs text-muted-foreground">Curso</label>
+          <select
+            name="course"
+            defaultValue={params.course ?? ""}
+            className="h-10 w-full rounded-md border border-input bg-white px-3 text-sm"
+          >
+            <option value="">Todos</option>
+            {(courses ?? []).map((c) => (
+              <option key={c.id} value={c.id}>{c.title}</option>
+            ))}
+          </select>
+        </div>
+        <div>
           <label className="text-xs text-muted-foreground">Etapa</label>
           <select
             name="stage"
@@ -155,6 +174,7 @@ export default async function CandidaturasPage({
           <tbody className="divide-y">
             {(data ?? []).map((a) => {
               const job = Array.isArray(a.job) ? a.job[0] : a.job;
+              const course = Array.isArray(a.course) ? a.course[0] : a.course;
               return (
                 <tr key={a.id} className="hover:bg-secondary/30">
                   <td className="px-4 py-3">
@@ -167,7 +187,12 @@ export default async function CandidaturasPage({
                     <p className="text-xs text-muted-foreground">{a.email}</p>
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
-                    {job?.title ?? <em>Banco de talentos</em>}
+                    {job?.title ??
+                      (course ? (
+                        <span className="text-teal-dark">Curso: {course.title}</span>
+                      ) : (
+                        <em>Banco de talentos</em>
+                      ))}
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {a.city}/{a.state}

@@ -10,6 +10,8 @@ export type ApplicationStage =
   | "rejected"
   | "talent_pool";
 
+export type CourseStatus = "draft" | "active" | "closed";
+
 export type QuestionScope = "general" | "role";
 export type QuestionType =
   | "single"
@@ -48,6 +50,21 @@ export interface Job {
   role?: Role;
 }
 
+export interface Course {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string | null;
+  description: string | null;
+  highlights: string[];
+  location: string | null;
+  schedule: string | null;
+  capacity: number | null;
+  status: CourseStatus;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Question {
   id: string;
   scope: QuestionScope;
@@ -73,6 +90,7 @@ export interface ApplicationAnswer {
 export interface Application {
   id: string;
   job_id: string | null;
+  course_id: string | null;
   is_talent_pool: boolean;
   full_name: string;
   birth_date: string | null;

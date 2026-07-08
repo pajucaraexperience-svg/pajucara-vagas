@@ -16,6 +16,21 @@ export const submitConfirmation = {
   secondaryCta: { label: "Cadastrar em outra vaga", href: "/" },
 };
 
+export const courseConfirmation = {
+  confirmado: {
+    title: "Inscrição confirmada!",
+    body:
+      "Recebemos sua inscrição no curso. Em breve entraremos em contato pelo WhatsApp ou e-mail com as datas e os próximos passos. Fique de olho!",
+  },
+  espera: {
+    title: "Inscrição recebida — lista de espera",
+    body:
+      "As vagas desta turma já foram preenchidas, mas registramos você na lista de espera. Se surgir uma vaga, ou em uma próxima turma, entraremos em contato. Obrigado pelo interesse!",
+  },
+  primaryCta: { label: "Ver outras vagas", href: "/vagas" },
+  secondaryCta: { label: "Voltar ao início", href: "/" },
+};
+
 export const consents = {
   truthfulness:
     "Declaro que todas as informações prestadas nesta candidatura são verdadeiras e que respondo pela veracidade delas.",

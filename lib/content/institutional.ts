@@ -59,6 +59,14 @@ export const jobsIntro = {
     "No momento não temos vagas abertas. Cadastre-se no nosso banco de talentos para ser considerado em futuras oportunidades.",
 };
 
+export const coursesHighlight = {
+  eyebrow: "Cursos gratuitos",
+  title: "Qualifique-se com o Grupo Pajuçara",
+  subtitle:
+    "Oferecemos cursos gratuitos de qualificação em hotelaria. É uma porta de entrada para novas oportunidades no nosso time — vagas limitadas.",
+  cta: { label: "Ver curso e inscrever-se", href: "/cursos" },
+};
+
 export const talentPoolBlock = {
   title: "Não encontrou a vaga ideal?",
   subtitle:

@@ -24,7 +24,7 @@ export default async function FichaCandidato({
   const [{ data: app }, { data: answers }, { data: notes }] = await Promise.all([
     supabase
       .from("applications")
-      .select("*, job:jobs(title, slug)")
+      .select("*, job:jobs(title, slug), course:courses(title, slug)")
       .eq("id", id)
       .maybeSingle(),
     supabase
@@ -42,6 +42,12 @@ export default async function FichaCandidato({
 
   if (!app) notFound();
   const job = Array.isArray(app.job) ? app.job[0] : app.job;
+  const course = Array.isArray(app.course) ? app.course[0] : app.course;
+  const origin = job?.title
+    ? job.title
+    : course?.title
+    ? `Curso: ${course.title}`
+    : "Banco de talentos";
   const general = (answers ?? []).filter((a) => a.question_scope === "general");
   const role = (answers ?? []).filter((a) => a.question_scope === "role");
 
@@ -60,7 +66,7 @@ export default async function FichaCandidato({
             {app.full_name}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {job?.title ?? "Banco de talentos"} · recebida em {formatDateTime(app.created_at as string)}
+            {origin} · recebida em {formatDateTime(app.created_at as string)}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
